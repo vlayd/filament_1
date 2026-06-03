@@ -1,0 +1,86 @@
+models:
+  Event:
+    name: string
+    title: string
+    slug: string unique
+    description: longtext nullable
+    background_image: string nullable
+    location: string nullable
+    status: string default:active
+    relationships:
+      hasMany: Ticket, EventDay
+  EventDay:
+    event_id: id foreign
+    date: date
+    description: longtext nullable
+    image: string nullable
+    relationships:
+      belongsTo: Event
+      hasMany: Talk
+  Talk:
+    event_day_id: id foreign
+    speaker_id: id foreign
+    title: string
+    description: longtext nullable
+    start_time: time nullable
+    end_time: time nullable
+    confirmed: boolean default:false
+    relationships:
+      belongsTo: EventDay, Speaker
+  Speaker:
+    name: string
+    bio: longtext nullable
+    photo: string nullable
+    social_links: json nullable
+    relationships:
+      hasMany: Talk
+  Ticket:
+    event_id: id foreign
+    name: string
+    description: longtext nullable
+    price: integer
+    stock: integer
+    benefits: json nullable
+    sort: integer default:0
+    vip: boolean default:false
+    active: boolean default:true
+    relationships:
+      belongsTo: Event
+      hasMany: Order
+  Order:
+    user_id: id foreign
+    order_number: string unique
+    total_amount: integer
+    payment_method: string
+    payment_status: string default:pending
+    payment_id: string nullable
+    payment_qr_code_image: longtext nullable
+    payment_qr_code_payload: longtext nullable
+    payment_qr_code_expiration_date: datetime nullable
+    paid_at: datetime nullable
+    relationships:
+      belongsTo: User
+      hasMany: OrderItem
+  OrderItem:
+    order_id: id foreign
+    ticket_id: id foreign
+    quantity: integer
+    unit_price: integer
+    total_price: integer
+    relationships:
+      belongsTo: Order, Ticket
+  Participant:
+    user_id: id foreign
+    document: string nullable
+    phone: string nullable
+    address: string nullable
+    address_number: string nullable
+    complement: string nullable
+    province: string nullable
+    postal_code: string nullable
+    city: string nullable
+    state: string nullable
+    external_reference: string nullable
+    asaas_customer_id: string nullable
+    relationships:
+      belongsTo: User

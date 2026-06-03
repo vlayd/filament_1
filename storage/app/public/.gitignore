@@ -1,0 +1,7 @@
+*
+!.gitignore
+!filacon-bg.png
+!event-day-1.png
+!event-day-2.png
+!speakers/
+!speakers/*
