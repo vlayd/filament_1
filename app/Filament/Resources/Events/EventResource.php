@@ -19,7 +19,6 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
 
-
 class EventResource extends Resource
 {
     protected static ?string $model = Event::class;
@@ -53,7 +52,7 @@ class EventResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            EventDaysRelationManager::class
         ];
     }
 

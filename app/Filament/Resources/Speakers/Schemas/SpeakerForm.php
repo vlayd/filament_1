@@ -26,6 +26,7 @@ class SpeakerForm
                         FileUpload::make('photo')
                             ->avatar()
                             ->disk('public')
+                            ->directory('speakers')
                             ->label(__('Photo')),
                         Group::make([
                             TextInput::make('name')

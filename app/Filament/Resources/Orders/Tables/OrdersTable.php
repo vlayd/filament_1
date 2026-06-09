@@ -2,11 +2,17 @@
 
 namespace App\Filament\Resources\Orders\Tables;
 
+use App\Enums\OrderPaymentMethod;
+use App\Enums\OrderStatus;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\QueryBuilder\Constraints\DateConstraint;
+use Filament\QueryBuilder\Constraints\NumberConstraint;
+use Filament\QueryBuilder\Constraints\SelectConstraint;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\QueryBuilder;
 use Filament\Tables\Table;
 
 class OrdersTable
@@ -36,9 +42,18 @@ class OrdersTable
                     ->label(__('Created at')),
                 TextColumn::make('updated_at')
                     ->label(__('Updated at')),
+
             ])
             ->filters([
-                //
+                QueryBuilder::make()
+                ->constraints([
+                    SelectConstraint::make('payment_status')
+                    ->options(OrderStatus::class),
+                    SelectConstraint::make('payment_method')
+                    ->options(OrderPaymentMethod::class),
+                    NumberConstraint::make('total_amount'),
+                    DateConstraint::make('created_at')
+                ])
             ])
             ->recordActions([
                 ViewAction::make(),

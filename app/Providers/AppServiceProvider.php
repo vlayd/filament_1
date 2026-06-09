@@ -47,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
         TextColumn::configureUsing(function (TextColumn $textColumn) {
             // $textColumn->alignCenter();
             if (Str::contains($textColumn->getName(), ['created_at', 'updated_at'])) {
-                $textColumn->since();
+                $textColumn->since()->alignCenter();
             }
 
             if (Str::contains($textColumn->getName(), ['status'])) {

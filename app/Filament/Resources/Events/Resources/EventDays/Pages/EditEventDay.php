@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Filament\Resources\Events\Pages;
+namespace App\Filament\Resources\Events\Resources\EventDays\Pages;
 
-use App\Filament\Resources\Events\EventResource;
+use App\Filament\Resources\Events\Resources\EventDays\EventDayResource;
 use BackedEnum;
 use Filament\Actions\DeleteAction;
-use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
-use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
+use Filament\Support\Icons\Heroicon;
 
-class EditEvent extends EditRecord
+class EditEventDay extends EditRecord
 {
-    protected static string $resource = EventResource::class;
+    protected static string $resource = EventDayResource::class;
 
     public function hasCombinedRelationManagerTabsWithContent(): bool
     {
@@ -27,7 +26,6 @@ class EditEvent extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            ViewAction::make(),
             DeleteAction::make(),
         ];
     }

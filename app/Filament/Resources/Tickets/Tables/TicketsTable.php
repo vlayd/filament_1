@@ -6,10 +6,12 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Tables\Columns\IconColumn;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class TicketsTable
 {
@@ -30,13 +32,11 @@ class TicketsTable
                     ->label(__('Price')),
                 TextColumn::make('stock')
                     ->numeric()
-                    ->alignCenter()
                     ->badge()
                     ->sortable()
                     ->label(__('Stock')),
                 TextColumn::make('sort')
                     ->numeric()
-                    ->alignCenter()
                     ->badge()
                     ->sortable()
                     ->label(__('Sort')),
@@ -48,9 +48,31 @@ class TicketsTable
                     ->label(__('Created at')),
                 TextColumn::make('updated_at')
                     ->label(__('Updated at')),
+
             ])
             ->filters([
-                //
+                Filter::make('price')
+                    ->schema([
+                        TextInput::make('min')
+                            ->prefix('R$')
+                            ->numeric(),
+                        TextInput::make('max')
+                            ->prefix('R$')
+                            ->numeric(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['min'],
+                                fn(Builder $query, $price): Builder => $query
+                                    ->where('price', '>=', round(floatval($price) * 100)),
+                            )
+                            ->when(
+                                $data['max'],
+                                fn(Builder $query, $price): Builder => $query
+                                    ->where('price', '<=', round(floatval($price) * 100)),
+                            );
+                    })
             ])
             ->recordActions([
                 ViewAction::make(),
